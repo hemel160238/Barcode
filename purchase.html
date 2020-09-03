@@ -46,14 +46,14 @@
                     var response = http.responseText;
                     var obj = JSON.parse(response)[0];
 
-                    if(document.getElementById(obj['id']) !== null ){
+                    if (document.getElementById(obj['id']) !== null) {
 
                         var infield = document.getElementById(obj['id'])["childNodes"][4]["childNodes"][0];
                         var currentVal = parseInt(infield.value);
                         currentVal += 1;
                         infield.value = currentVal;
 
-                        
+
                     }
                     else {
                         var table = document.getElementById("myTable");
@@ -70,20 +70,20 @@
                         cell3.innerHTML = obj['name'];
                         cell4.innerHTML = obj['qty'];
                         //cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">   <button type="button" onclick="removeItem(id)">Remove Item</button>'
-                        cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">   <button type="button" onclick="removeItem(this)">Remove Item</button>'
-
+                        cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">'
+                        cell6.innerHTML = '<button type="button" onclick="removeItem(this)">Remove Item</button>'
                         // var button = document.getElementById(obj['id'])["childNodes"][4]["childNodes"][2];
                         // button.onclick = function() { removeItem(obj['id']); }
                     }
 
                 }
             }
-                http.send(params);
-            }
+            http.send(params);
+        }
 
-        function removeItem(productId){
-            alert(productId);
-            console.log(productId);
+        function removeItem(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
         }
     </script>
 </body>
