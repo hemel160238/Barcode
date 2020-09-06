@@ -8,7 +8,7 @@
 <body>
     <h1>Add Item to Basket</h1>
     <input id="productIn" type="text" name="productId" placeholder="Product Id">
-    <button type="button" onclick="myFunction()">Add To Basket</button>
+    <button type="button" id="addButton" onclick="myFunction()">Add To Basket</button>
 
     <table id="myTable">
         <thead>
@@ -29,6 +29,21 @@
     </table>
 
     <script>
+        // Get the input field
+        var input = document.getElementById("productIn");
+
+        // Execute a function when the user releases a key on the keyboard
+        input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("addButton").click();
+
+            document.getElementById("productIn").value ="";
+        }
+        }); 
         function myFunction() {
             var productId = document.getElementById("productIn").value;
 
@@ -70,7 +85,7 @@
                         cell3.innerHTML = obj['name'];
                         cell4.innerHTML = obj['qty'];
                         //cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">   <button type="button" onclick="removeItem(id)">Remove Item</button>'
-                        cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">'
+                        cell5.innerHTML = '<input id="productNumber" type="number" value="1" min="0" name="productId" placeholder="Qty">'
                         cell6.innerHTML = '<button type="button" onclick="removeItem(this)">Remove Item</button>'
                         // var button = document.getElementById(obj['id'])["childNodes"][4]["childNodes"][2];
                         // button.onclick = function() { removeItem(obj['id']); }
