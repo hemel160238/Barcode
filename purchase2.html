@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make Purchase</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -15,89 +16,82 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"
         defer></script>
-    <script src="purchase.js" defer></script>
-
 </head>
-
 <body>
-    <h1>Add Item to Basket</h1>
-
+    <h1>Add Item to Body</h1>
+    
     <div>
+        
+        <div>
+            <input type="text" id="fname" name="fname" placeholder="Student Id" class="form-control">
+            <button type="button" id="addStudentButton" onclick="getStudentInfo()" class="btn btn-success">Select Student</button>
+        </div>
+        <div>
+            <form>
+                <fieldset disabled style="display: flex;justify-content: space-around;">
+                    <div class="form-group">
+                        <label for="disabledTextInput">Id</label>
+                        <input type="text" id="disabledTextInputId" class="form-control" placeholder="ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="disabledTextInput">Name</label>
+                        <input type="text" id="disabledTextInputName" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="disabledTextInput">Email</label>
+                        <input type="text" id="disabledTextInputEmail" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="disabledTextInput">Credit</label>
+                        <input type="text" id="disabledTextInputCredit" class="form-control" placeholder="Credit">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
         <div>
             <input id="productIn" type="text" class="form-control" name="productId" placeholder="Product Id">
             <button type="button" id="addItemButton" onclick="myFunction()" class="btn btn-success">Add To
                 Basket</button>
         </div>
 
-        <div>
-            <input type="text" id="sname" name="sname" placeholder="Student Id"><br>
-            <button type="button" id="addStudentButton" class="btn btn-success">Select
-                Student</button>
-
-        </div>
-    </div>
-    <div>
-        <form>
-            <fieldset disabled>
-                <div class="form-group">
-                    <label for="disabledTextInput">Id</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="ID">
-                </div>
-                <div class="form-group">
-                    <label for="disabledTextInput">Name</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Name">
-                </div>
-                <div class="form-group">
-                    <label for="disabledTextInput">Email</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <label for="disabledTextInput">Credit</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Credit">
-                </div>
-            </fieldset>
-        </form>
+        <table id="myTable" class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+    
+            <!-- <tfoot>
+                <tr>
+                    <td>My footer</td>
+                </tr>
+            </tfoot> -->
+        </table>
     </div>
 
+<script>
+    // Get the input field
+    var input = document.getElementById("productIn");
 
 
-    <table id="myTable" class="table table-dark">
-        <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Price</th>
-                <th scope="col">Name</th>
-                <th scope="col">Qty</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
+    // Execute a function when the user releases a key on the keyboard
+    input.addEventListener("keyup", function (event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("addItemButton").click();
 
-        <!-- <tfoot>
-            <tr>
-                <td>My footer</td>
-            </tr>
-        </tfoot> -->
-    </table>
-
-    <script>
-
-        // Get the input field
-        var input = document.getElementById("productIn");
-
-
-        // Execute a function when the user releases a key on the keyboard
-        input.addEventListener("keyup", function (event) {
-            // Number 13 is the "Enter" key on the keyboard
-            if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("addItemButton").click();
-
-                document.getElementById("productIn").value = "";
-            }
-        });
-        function myFunction() {
+            document.getElementById("productIn").value = "";
+        }
+    });
+            function myFunction() {
             var productId = document.getElementById("productIn").value;
 
             var http = new XMLHttpRequest();
@@ -113,6 +107,10 @@
 
                     var response = http.responseText;
                     var obj = JSON.parse(response)[0];
+
+                    if(!obj){
+                        alert("Item Not Found!");
+                    }
 
                     if (document.getElementById(obj['id']) !== null) {
 
@@ -138,19 +136,19 @@
                         cell3.innerHTML = obj['name'];
                         cell4.innerHTML = obj['qty'];
                         //cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">   <button type="button" onclick="removeItem(id)">Remove Item</button>'
-                        cell5.innerHTML = '<input id="productNumber" class="form-control" type="number" value="1" min="0" name="productId" placeholder="Qty">'
+                        cell5.innerHTML = '<input id="productNumber" class="form-control" type="number" value="1" min="0" name="productId" placeholder="Qty" style="width: auto;">'
                         cell6.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeItem(this)">Remove Item</button>'
                         // var button = document.getElementById(obj['id'])["childNodes"][4]["childNodes"][2];
                         // button.onclick = function() { removeItem(obj['id']); }
                     }
 
                 }
+                
             }
             http.send(params);
         }
-
-        function getStudentInfo() {
-            var studentId = document.getElementById("sname").value;
+            function getStudentInfo() {
+            var studentId = document.getElementById("fname").value;
 
             //console.log(btn);
 
@@ -169,17 +167,18 @@
                     var obj = JSON.parse(response)[0];
 
                     console.log(obj);
+                    document.getElementById("disabledTextInputId").value = obj['id'];
+                    document.getElementById("disabledTextInputName").value = obj['first_name']+" "+obj["last_name"];
+                    document.getElementById("disabledTextInputEmail").value = obj['email'];
+                    document.getElementById("disabledTextInputCredit").value = obj['credit'];
+
+
+
 
                 }
             }
             http.send(params);
         }
-
-        function removeItem(btn) {
-            var row = btn.parentNode.parentNode;
-            row.parentNode.removeChild(row);
-        }
-    </script>
+</script>
 </body>
-
 </html>
