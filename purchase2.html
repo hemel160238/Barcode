@@ -24,7 +24,10 @@
         
         <div>
             <input type="text" id="fname" name="fname" placeholder="Student Id" class="form-control">
-            <button type="button" id="addStudentButton" onclick="getStudentInfo()" class="btn btn-success">Select Student</button>
+            <div>
+                <span><button type="button" id="addStudentButton" onclick="getStudentInfo()" class="btn btn-success">Select Student</button></span>
+                <span><button type="button" id="deleteStudentButton" onclick="removeStudent()" class="btn btn-danger">Delete Student</button></span>
+            </div>
         </div>
         <div>
             <form>
@@ -77,6 +80,22 @@
 <script>
     // Get the input field
     var input = document.getElementById("productIn");
+    var inputStudent = document.getElementById("fname");
+
+    //console.log(inputStudent);
+
+    // Execute a function when the user releases a key on the keyboard
+    inputStudent.addEventListener("keyup", function (event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("addStudentButton").click();
+
+            document.getElementById("fname").value = "";
+        }
+    });
 
 
     // Execute a function when the user releases a key on the keyboard
@@ -179,6 +198,16 @@
             }
             http.send(params);
         }
+            function removeItem(btn) {
+                var row = btn.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+            }
+            function removeStudent() {
+                document.getElementById("disabledTextInputId").value = "";
+                document.getElementById("disabledTextInputName").value = "";
+                document.getElementById("disabledTextInputEmail").value = "";
+                document.getElementById("disabledTextInputCredit").value = "";
+            }
 </script>
 </body>
 </html>
