@@ -72,10 +72,24 @@ if (isset($_POST["getStudent"])) {
 
             <!-- <tfoot>
                 <tr>
-                    <td>My footer</td>
+                    <td>Total Cost</td>
                 </tr>
             </tfoot> -->
         </table>
+
+        <!-- <table class="table table-dark" id="resultTable">
+            <thead>
+                <tr>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"><input id="" class="form-control" type="number" value="1" min="0" name="productId" placeholder="Qty" style="width: auto;"></th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+        </table> -->
     </div>
 
     <script>
@@ -167,30 +181,45 @@ if (isset($_POST["getStudent"])) {
         function calcPrice() {
             var mytable = document.getElementById("myTable");
 
-
             var grandTotal = 0;
             for (var i = 1, row; row = mytable.rows[i]; i++) {
                 //iterate through rows
                 //rows would be accessed using the "row" variable assigned in the for loop
                 //console.log(row);
 
-                var price = parseFloat( row.cells[1].innerHTML);
+                var price = parseFloat(row.cells[1].innerHTML);
                 //var qty = row.cells[4].innerHTML.value;
 
                 //var totalprice = price*qty;
                 //console.log(price);
+
                 var prodCount = parseInt(document.getElementById(row['id'])["childNodes"][4]["childNodes"][0].value);
 
-                row.cells[5].innerHTML = price*prodCount;
+                row.cells[5].innerHTML = price * prodCount;
 
-                var rowPrice = price*prodCount;
+                var rowPrice = price * prodCount;
                 grandTotal += rowPrice;
 
+                console.log(prodCount);
                 for (var j = 0, col; col = row.cells[j]; j++) {
                     //iterate through columns
                     //columns would be accessed using the "col" variable assigned in the for loop
                 }
+
             }
+
+            var countText = mytable.rows[0].cells[5];
+            countText.innerHTML = "Total Price =" + grandTotal;
+
+            var creditAvaiable = parseFloat( document.getElementById("disabledTextInputCredit").value);
+
+            if (creditAvaiable < grandTotal){
+                document.getElementById("disabledTextInputCredit").style.border = "3px solid red";
+            }
+            else{
+                document.getElementById("disabledTextInputCredit").style.border = "";
+            }
+
         }
     </script>
 </body>
