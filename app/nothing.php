@@ -200,7 +200,6 @@ if (isset($_POST["getStudent"])) {
                 var rowPrice = price * prodCount;
                 grandTotal += rowPrice;
 
-                console.log(prodCount);
                 for (var j = 0, col; col = row.cells[j]; j++) {
                     //iterate through columns
                     //columns would be accessed using the "col" variable assigned in the for loop
