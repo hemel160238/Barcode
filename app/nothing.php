@@ -53,6 +53,7 @@ if (isset($_POST["getStudent"])) {
         <input id="productIn" type="text" class="form-control" name="productId" placeholder="Product Id">
         <button type="button" id="addItemButton" onclick="myFunction()" class="btn btn-success">Add To
             Basket</button>
+        <button type="button" id="calcPrice" onclick="calcPrice()" class="btn btn-success">Calculate Price</button>
     </div>
 
     <div>
@@ -60,9 +61,11 @@ if (isset($_POST["getStudent"])) {
             <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Unit Price</th>
                     <th scope="col">Name</th>
                     <th scope="col">Qty</th>
+                    <th scope="col">Qty2</th>
+                    <th scope="col">Total Price</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -92,6 +95,7 @@ if (isset($_POST["getStudent"])) {
                 document.getElementById("productIn").value = "";
             }
         });
+
         function myFunction() {
             var productId = document.getElementById("productIn").value;
 
@@ -103,13 +107,13 @@ if (isset($_POST["getStudent"])) {
             //Send the proper header information along with the request
             http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-            http.onreadystatechange = function () {//Call a function when the state changes.
+            http.onreadystatechange = function() { //Call a function when the state changes.
                 if (http.readyState == 4 && http.status == 200) {
 
                     var response = http.responseText;
                     var obj = JSON.parse(response)[0];
 
-                    if(!obj){
+                    if (!obj) {
                         alert("Item Not Found!");
                     }
 
@@ -121,8 +125,7 @@ if (isset($_POST["getStudent"])) {
                         infield.value = currentVal;
 
 
-                    }
-                    else {
+                    } else {
                         var table = document.getElementById("myTable");
                         var row = table.insertRow(table.rows.length);
                         row.id = obj['id'];
@@ -131,28 +134,64 @@ if (isset($_POST["getStudent"])) {
                         var cell3 = row.insertCell(2);
                         var cell4 = row.insertCell(3);
                         var cell5 = row.insertCell(4);
-                        var cell6 = row.insertCell(5);
+
+                        var calcPrice = row.insertCell(5);
+                        var cell6 = row.insertCell(6);
+
                         cell1.innerHTML = obj['id'];
                         cell2.innerHTML = obj['price'];
                         cell3.innerHTML = obj['name'];
                         cell4.innerHTML = obj['qty'];
+
+                        calcPrice.innerHTML = "Hello";
                         //cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">   <button type="button" onclick="removeItem(id)">Remove Item</button>'
                         cell5.innerHTML = '<input id="productNumber" class="form-control" type="number" value="1" min="0" name="productId" placeholder="Qty" style="width: auto;">'
                         cell6.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeItem(this)">Remove Item</button>'
                         // var button = document.getElementById(obj['id'])["childNodes"][4]["childNodes"][2];
                         // button.onclick = function() { removeItem(obj['id']); }
+
+
                     }
 
                 }
-                
+
             }
             http.send(params);
         }
+
         function removeItem(btn) {
-                var row = btn.parentNode.parentNode;
-                row.parentNode.removeChild(row);
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
         }
-        
+
+        function calcPrice() {
+            var mytable = document.getElementById("myTable");
+
+
+            var grandTotal = 0;
+            for (var i = 1, row; row = mytable.rows[i]; i++) {
+                //iterate through rows
+                //rows would be accessed using the "row" variable assigned in the for loop
+                //console.log(row);
+
+                var price = parseFloat( row.cells[1].innerHTML);
+                //var qty = row.cells[4].innerHTML.value;
+
+                //var totalprice = price*qty;
+                //console.log(price);
+                var prodCount = parseInt(document.getElementById(row['id'])["childNodes"][4]["childNodes"][0].value);
+
+                row.cells[5].innerHTML = price*prodCount;
+
+                var rowPrice = price*prodCount;
+                grandTotal += rowPrice;
+
+                for (var j = 0, col; col = row.cells[j]; j++) {
+                    //iterate through columns
+                    //columns would be accessed using the "col" variable assigned in the for loop
+                }
+            }
+        }
     </script>
 </body>
 
