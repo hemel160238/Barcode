@@ -148,6 +148,10 @@ if (isset($_POST["getStudent"])) {
             }
             http.send(params);
         }
+        function removeItem(btn) {
+                var row = btn.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+        }
         
     </script>
 </body>
