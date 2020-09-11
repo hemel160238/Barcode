@@ -54,6 +54,9 @@ if (isset($_POST["getStudent"])) {
         <button type="button" id="addItemButton" onclick="myFunction()" class="btn btn-success">Add To
             Basket</button>
         <button type="button" id="calcPrice" onclick="calcPrice()" class="btn btn-success">Calculate Price</button>
+        <button type="button" id="makePurchase" onclick="makePurchase()" class="btn btn-success">Confirm Purchase</button>
+
+        <p id="totalPrice">0</p>
     </div>
 
     <div>
@@ -76,20 +79,6 @@ if (isset($_POST["getStudent"])) {
                 </tr>
             </tfoot> -->
         </table>
-
-        <!-- <table class="table table-dark" id="resultTable">
-            <thead>
-                <tr>
-                    <th scope="col">Total</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"><input id="" class="form-control" type="number" value="1" min="0" name="productId" placeholder="Qty" style="width: auto;"></th>
-                    <th scope="col">Total Price</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-        </table> -->
     </div>
 
     <script>
@@ -212,6 +201,8 @@ if (isset($_POST["getStudent"])) {
 
             var creditAvaiable = parseFloat( document.getElementById("disabledTextInputCredit").value);
 
+            document.getElementById("totalPrice").innerHTML = grandTotal;
+
             if (creditAvaiable < grandTotal){
                 document.getElementById("disabledTextInputCredit").style.border = "3px solid red";
             }
@@ -219,6 +210,53 @@ if (isset($_POST["getStudent"])) {
                 document.getElementById("disabledTextInputCredit").style.border = "";
             }
 
+        }
+
+        function makePurchase(){
+            
+
+            var mytable = document.getElementById("myTable");
+
+            var keys = ['id', 'qty']
+            var ret = [];
+
+            if(!mytable.rows[1]){
+                alert("Put Some Item in Basket");
+            }
+
+            for (var i = 1, row; row = mytable.rows[i]; i++) {
+                
+                obj = {};
+                obj['id'] = row.cells[0].innerHTML;
+                obj['qty'] = document.getElementById(row['id'])["childNodes"][4]["childNodes"][0].value;
+                
+                ret.push(obj);
+            }
+
+            itemJson = JSON.stringify(ret);
+
+            var http = new XMLHttpRequest();
+            var url = 'makepurchase.php';
+            var params = 'product=' + itemJson;
+            http.open('POST', url, true);
+
+            //Send the proper header information along with the request
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            http.onreadystatechange = function() { //Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+
+                    var response = http.responseText;
+                    //var obj = JSON.parse(response)[0];
+
+                    console.log(response);
+
+
+                }
+
+            }
+            http.send(params);
+            
         }
     </script>
 </body>
