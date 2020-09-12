@@ -6,16 +6,33 @@ if(isset($_POST['product'])){
     
     $product = $_POST['product'];
     $studentId = $_POST['studentId'];
-    //$insertId = make_unit_purchase(($studentId));
+    $cost = $_POST['cost'];
 
-    // if($insertId){
+    $insertId = make_unit_purchase(($studentId));
+    if($insertId){
+        $result = make_array($insertId, $product);
 
-    // }
+        if($result){
+            
+            if(reduce_credit($studentId, $cost)){
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else{
+            echo 0;
+        }
+    }
 
-    // else {
-    //     echo "Error";
-    // }
-    make_array(2, $product);
+    else {
+        echo 0;
+    }
+
+    reduce_credit($studentId, $cost);
+    
 
 }
 
@@ -47,10 +64,32 @@ function make_array($insertId, $product){
         array_push($query_array, $unit_insert_string);
     }
     $final_query = $base_string.implode(",", $query_array).";";
-    echo($final_query);
+    //echo($final_query);
+
+    $con = config::connect();
+    $query = $con->prepare($final_query);
+
+    $query->execute();
+
+    return $query;
 }
 
-function make_all_purchase($insertId, $product){
+function reduce_credit($studentId, $cost){
+    
+    $get_credit_string = "SELECT `credit` FROM `student` WHERE student.id = ".(string)$studentId;
 
+    $con = config::connect();
+    $query = $con->prepare($get_credit_string);
+    $query->execute();
+    $current_credit = (float)$query->fetchAll(PDO::FETCH_ASSOC)[0]['credit'];
+    
+    $new_credit = $current_credit - $cost;
+
+    $update_credit_string = "UPDATE `student` SET `credit`=$new_credit WHERE student.id = ".(string)$studentId;
+
+    $update_query = $con->prepare($update_credit_string);
+    $update_query->execute();
+
+    return $update_query;
 }
 ?>

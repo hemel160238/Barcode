@@ -234,13 +234,13 @@ if (isset($_POST["getStudent"])) {
             }
 
             var studentId = <?php echo $id?>;
-            
+            var totalCost = parseFloat( document.getElementById("totalPrice").innerHTML );
 
             itemJson = JSON.stringify(ret);
 
             var http = new XMLHttpRequest();
             var url = 'makepurchase.php';
-            var params = 'product=' + itemJson+"&studentId=" + studentId;
+            var params = 'product=' + itemJson+"&studentId=" + studentId + "&cost=" + totalCost;
             http.open('POST', url, true);
 
             //Send the proper header information along with the request
