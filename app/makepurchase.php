@@ -15,24 +15,26 @@ if(isset($_POST['product'])){
         if($result){
             
             if(reduce_credit($studentId, $cost)){
-                echo 1;
+                
+                $conclusion = (object) array('result' => 1, 'insertId' => $insertId);
+                echo(json_encode($conclusion));
             }
             else
             {
-                echo 0;
+                $conclusion = (object) array('result' => 0, 'insertId' => null);
+                echo(json_encode($conclusion));
             }
         }
         else{
-            echo 0;
+            $conclusion = (object) array('result' => 0, 'insertId' => null);
+            echo(json_encode($conclusion));
         }
     }
 
     else {
-        echo 0;
-    }
-
-    reduce_credit($studentId, $cost);
-    
+        $conclusion = (object) array('result' => 0, 'insertId' => null);
+        echo(json_encode($conclusion));
+    }    
 
 }
 

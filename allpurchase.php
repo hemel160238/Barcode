@@ -16,6 +16,7 @@ if (isset($_GET['startdate'])) {
 
 if (isset($_GET['enddate'])) {
     $end_date = $_GET['enddate'];
+
 }
 
 
@@ -41,10 +42,11 @@ function query_builder($studentid, $start_date, $end_date)
         $base_query = $base_query . " AND unit_purchase.date >='" . $start_date . "'";
     }
 
-    if ($start_date) {
+    if ($end_date) {
         $base_query = $base_query . " AND unit_purchase.date <='" . $end_date . "'";
     }
 
+    echo $base_query;
     return $base_query;
 }
 
@@ -75,35 +77,53 @@ function get_purchase_from_db($query_string)
 <body>
     <h1>Login Register Project</h1>
     <div>
-    <table class="table table-hover table-dark">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
-        </tbody>
-    </table>
+        <form action="?" method="GET" class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">Student Id</label>
+                <input type="text" class="form-control" id="inputPassword2" placeholder="Id" name="id">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">Start Date</label>
+                <input type="date" class="form-control" id="inputPassword2" placeholder="Start Date" name="startdate">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">End Date</label>
+                <input type="date" class="form-control" id="inputPassword2" placeholder="End Date" name="enddate">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+        </form>
+    </div>
+
+    <div>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <p><?php echo $json_string; ?></p>
