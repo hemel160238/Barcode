@@ -46,7 +46,6 @@ function query_builder($studentid, $start_date, $end_date)
         $base_query = $base_query . " AND unit_purchase.date <='" . $end_date . "'";
     }
 
-    echo $base_query;
     return $base_query;
 }
 
@@ -95,38 +94,45 @@ function get_purchase_from_db($query_string)
     </div>
 
     <div>
-        <table class="table table-hover table-dark">
+        <table  id="myTable" class="table table-hover table-dark">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Purchase Id</th>
+                    <th scope="col">Student Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
+            
         </table>
     </div>
 
-    <p><?php echo $json_string; ?></p>
+    <script>
+        var s = <?php echo $json_string; ?>;
+        for(let key in s){
+            console.log(key);
+            var tempPur = s[key];
+
+            var table = document.getElementById("myTable");
+            var row = table.insertRow(table.rows.length);
+            row.id = tempPur['id'];
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+
+            var purchase_id = tempPur['parchase_id'];
+            cell1.innerHTML = tempPur['parchase_id'];
+            cell2.innerHTML = tempPur['student_id'];
+            cell3.innerHTML = tempPur['first_name']+" "+tempPur['last_name'];
+            cell4.innerHTML = tempPur['date'];
+            cell5.innerHTML = '<a href="app/purchasedetails.php?purchaseId='+purchase_id+'"><button class="btn btn-primary btn-xs my-xs-btn" type="button" >'
+    + '<span class="glyphicon glyphicon-print"></span> Detailed Report</button></a>';
+
+
+        }
+    </script>
 </body>
 
 </html>

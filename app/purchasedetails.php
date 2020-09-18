@@ -8,7 +8,7 @@ if (isset($_GET['purchaseId'])) {
     $result_purchase = $result->fetchAll();
     $json_string = json_encode($result_purchase);
 
-    echo ($json_string);
+    //echo ($json_string);
 } else {
     echo ("404 Not Found");
 }
@@ -45,51 +45,37 @@ function get_purchase_details($purchaseId)
 </head>
 
 <body>
-
+    <h1>Report for Purchase</h1>
     <button type="button" id="makePurchase" onclick="print()" class="btn btn-success">Print</button>
     <div>
-        <form>
+        <form >
             <fieldset disabled style="display: flex;justify-content: space-around;">
                 <div class="form-group">
-                    <label for="disabledTextInput">Id</label>
+                    <label for="disabledTextInput" id="ignorePDF">Id</label>
                     <input type="text" id="disabledTextInputId" class="form-control" placeholder="ID">
                 </div>
                 <div class="form-group">
-                    <label for="disabledTextInput">Name</label>
+                    <label for="disabledTextInput" id="ignorePDF">Name</label>
                     <input type="text" id="disabledTextInputName" class="form-control" placeholder="Name">
                 </div>
                 <div class="form-group">
-                    <label for="disabledTextInput">Email</label>
+                    <label for="disabledTextInput" id="ignorePDF">Email</label>
                     <input type="text" id="disabledTextInputEmail" class="form-control" placeholder="Email">
                 </div>
                 <div class="form-group">
-                    <label for="disabledTextInput">Credit</label>
+                    <label for="disabledTextInput" id="ignorePDF">Credit</label>
                     <input type="text" id="disabledTextInputCredit" class="form-control" placeholder="Credit">
                 </div>
             </fieldset>
         </form>
     </div>
-    <div>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th scope="row">Id</th>
-                    <td id="tableid">Mark</td>
-                </tr>
-                <tr>
-                    <th scope="row">Name</th>
-                    <td id="tablename">Jacob</td>
-                </tr>
-                <tr>
-                    <th scope="row">Email</th>
-                    <td id="tableemail">Larry</td>
-                </tr>
-                <tr>
-                    <th scope="row">Credit</th>
-                    <td id="tablecredit">Larry</td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="ignore" style="display: none;">
+        <p id="p_orderid"></p>
+        <p id="p_id"></p>
+        <p id="p_email"></p>
+        <p id="p_name"></p>
+        <p id="p_credit"></p>
+
     </div>
     <div>
         <table id="myTable" class="table table-dark">
@@ -109,6 +95,8 @@ function get_purchase_details($purchaseId)
                 </tr>
             </tfoot> -->
         </table>
+
+        <p id="p_date"></p>
     </div>
 
     <script>
@@ -116,6 +104,7 @@ function get_purchase_details($purchaseId)
         var totalCost = 0;
 
 
+        document.getElementById("p_orderid").innerHTML = "Purchase Id: #<?php echo $purchaseId; ?>";
 
         for (let key in s) {
             //console.log(key, s[key]);
@@ -141,8 +130,19 @@ function get_purchase_details($purchaseId)
             cell4.innerHTML = tempPur['qty'];
             cell5.innerHTML = parseFloat(tempPur['price']) * parseInt(tempPur['qty']);
             totalCost += parseFloat(tempPur['price']) * parseInt(tempPur['qty']);
+
+            // User Information For Printing
+            document.getElementById("p_id").innerHTML = "Student id:"+tempPur['id'];
+            document.getElementById("p_name").innerHTML = "Student's Name:"+tempPur['first_name'] + " " + tempPur['last_name'];
+            document.getElementById("p_email").innerHTML = "Student's Email:"+tempPur['email'];
+            document.getElementById("p_credit").innerHTML = "Credit:"+tempPur['credit'];
+            document.getElementById("p_date").innerHTML = "Printed On:"+new Date().toLocaleString();
+
+
         }
 
+
+        // calculate last row of table
         var table = document.getElementById("myTable");
         var row = table.insertRow(table.rows.length);
         row.id = tempPur['id'];
@@ -174,6 +174,8 @@ function get_purchase_details($purchaseId)
 
             doc.output("dataurlnewwindow");
         }
+
+
     </script>
 </body>
 
