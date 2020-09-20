@@ -1,5 +1,18 @@
 <?php
 
+session_start();
+
+if ($_SESSION) {
+    if ($_SESSION['role'] == "admin") {
+        
+    } else {
+        header("Location: login.html");
+    }
+} else {
+    echo "Session Is not there";
+    header("Location: login.html");
+}
+
 if (isset($_POST["getStudent"])) {
     $id = $_POST['id'];
     $email = $_POST['email'];
@@ -25,6 +38,15 @@ if (isset($_POST["getStudent"])) {
 
 
 <body>
+
+    <div>
+        <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
+            <label class="logoutLblPos">
+                <?php echo ($_SESSION['role'] . " " . $_SESSION['id']); ?>
+                <input name="submit2" type="submit" id="submit2" value="Log out" class="btn btn-danger">
+            </label>
+        </form>
+    </div>
 
     <div>
         <form>
@@ -199,48 +221,47 @@ if (isset($_POST["getStudent"])) {
             var countText = mytable.rows[0].cells[5];
             countText.innerHTML = "Total Price =" + grandTotal;
 
-            var creditAvaiable = parseFloat( document.getElementById("disabledTextInputCredit").value);
+            var creditAvaiable = parseFloat(document.getElementById("disabledTextInputCredit").value);
 
             document.getElementById("totalPrice").innerHTML = grandTotal;
 
-            if (creditAvaiable < grandTotal){
+            if (creditAvaiable < grandTotal) {
                 document.getElementById("disabledTextInputCredit").style.border = "3px solid red";
-            }
-            else{
+            } else {
                 document.getElementById("disabledTextInputCredit").style.border = "";
             }
 
         }
 
-        function makePurchase(){
-            
+        function makePurchase() {
+
 
             var mytable = document.getElementById("myTable");
 
             var keys = ['id', 'qty']
             var ret = [];
 
-            if(!mytable.rows[1]){
+            if (!mytable.rows[1]) {
                 alert("Put Some Item in Basket");
             }
 
             for (var i = 1, row; row = mytable.rows[i]; i++) {
-                
+
                 obj = {};
                 obj['id'] = row.cells[0].innerHTML;
                 obj['qty'] = document.getElementById(row['id'])["childNodes"][4]["childNodes"][0].value;
-                
+
                 ret.push(obj);
             }
 
-            var studentId = <?php echo $id?>;
-            var totalCost = parseFloat( document.getElementById("totalPrice").innerHTML );
+            var studentId = <?php echo $id ?>;
+            var totalCost = parseFloat(document.getElementById("totalPrice").innerHTML);
 
             itemJson = JSON.stringify(ret);
 
             var http = new XMLHttpRequest();
             var url = 'makepurchase.php';
-            var params = 'product=' + itemJson+"&studentId=" + studentId + "&cost=" + totalCost;
+            var params = 'product=' + itemJson + "&studentId=" + studentId + "&cost=" + totalCost;
             http.open('POST', url, true);
 
             //Send the proper header information along with the request
@@ -251,15 +272,23 @@ if (isset($_POST["getStudent"])) {
 
                     var response = http.responseText;
                     //var obj = JSON.parse(response)[0];
-
                     console.log(response);
+
+                    var resultObj = JSON.parse(response);
+                    console.log(resultObj['result']);
+
+                    if (resultObj['result'] == 1) {
+                        location.replace("purchasedetails.php?purchaseId=" + resultObj['insertId']);
+                    } else {
+                        alert(" Something gone Wrong !");
+                    }
 
 
                 }
 
             }
             http.send(params);
-            
+
         }
     </script>
 </body>

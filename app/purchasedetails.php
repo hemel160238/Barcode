@@ -1,4 +1,18 @@
 <?php
+session_start();
+
+if ($_SESSION) {
+    if ($_SESSION['role'] == "admin") {
+        
+    } else {
+        header("Location: login.html");
+    }
+} else {
+    echo "Session Is not there";
+    header("Location: login.html");
+}
+
+
 include_once("config.php");
 
 if (isset($_GET['purchaseId'])) {
@@ -45,7 +59,15 @@ function get_purchase_details($purchaseId)
 </head>
 
 <body>
-    <h1>Report for Purchase</h1>
+    <h1>Report for Purchase #<?php echo($purchaseId); ?></h1>
+
+    <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
+        <label class="logoutLblPos">
+            <?php echo ($_SESSION['role']." ".$_SESSION['id']);?>
+            <input name="submit2" type="submit" id="submit2" value="Log out" class="btn btn-danger">
+        </label>
+    </form>
+    
     <button type="button" id="makePurchase" onclick="print()" class="btn btn-success">Print</button>
     <div>
         <form >
@@ -96,7 +118,7 @@ function get_purchase_details($purchaseId)
             </tfoot> -->
         </table>
 
-        <p id="p_date"></p>
+        <p id="p_date" style="display: none;"></p>
     </div>
 
     <script>
@@ -135,7 +157,7 @@ function get_purchase_details($purchaseId)
             document.getElementById("p_id").innerHTML = "Student id:"+tempPur['id'];
             document.getElementById("p_name").innerHTML = "Student's Name:"+tempPur['first_name'] + " " + tempPur['last_name'];
             document.getElementById("p_email").innerHTML = "Student's Email:"+tempPur['email'];
-            document.getElementById("p_credit").innerHTML = "Credit:"+tempPur['credit'];
+            document.getElementById("p_credit").innerHTML = "Credit:"+tempPur['credit']+' RM';
             document.getElementById("p_date").innerHTML = "Printed On:"+new Date().toLocaleString();
 
 
