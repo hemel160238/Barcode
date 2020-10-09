@@ -99,6 +99,9 @@ function get_purchase_from_db($query_string)
         <a href="student.php">
             <button type="submit" class="btn btn-primary">Make New Purchase</button>
         </a>
+        <a href="managestudent.php">
+            <button type="submit" class="btn btn-primary">Students Manager</button>
+        </a>
     </div>
 
     <div>
