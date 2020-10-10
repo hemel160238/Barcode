@@ -21,7 +21,6 @@ if (isset($_GET['deleteStudent'])) {
     del_student($deleteStudent);
 }
 
-echo ($deleteStudent);
 
 $get_purchase = get_student();
 
@@ -58,20 +57,44 @@ function get_student()
 <html lang="en">
 
 <head>
-    <title>Manage</title>
+    <title>Add Student</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" href="allpurchase.php">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="student.php">Make Purchase</a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="managestudent.php">Manage Student<span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="addstudent.php">Add Student</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
     <div id="rootDiv">
 
-        <h1>Manage Students</h1>
+        <h1>Add Student</h1>
 
         <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
             <label class="logoutLblPos">
@@ -91,7 +114,8 @@ function get_student()
                 <thead>
                     <tr>
                         <th scope="col">Student Id</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Credit</th>
                     </tr>
@@ -103,11 +127,10 @@ function get_student()
 
 
     <script>
+        var editClicked = [];
         var s = <?php echo $json_string; ?>;
 
-        console.log(s);
         for (let key in s) {
-            console.log(key);
             var tempPur = s[key];
 
             var table = document.getElementById("myTable");
@@ -119,18 +142,94 @@ function get_student()
             var cell4 = row.insertCell(3);
 
             var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
 
             var student_id = tempPur['id'];
 
-            cell1.innerHTML = tempPur['id']
-            cell2.innerHTML = tempPur['first_name'] + " " + tempPur['last_name'];
-            cell3.innerHTML = tempPur['email'];
-            cell4.innerHTML = tempPur['credit'];
+            cell1.innerHTML = tempPur['id'];
+            cell2.innerHTML = tempPur['first_name'];
+            cell3.innerHTML = tempPur['last_name'];
+            cell4.innerHTML = tempPur['email'];
+            cell5.innerHTML = tempPur['credit'];
 
-            cell5.innerHTML = '<a href="managestudent.php?deleteStudent=' + student_id + '"><button class="btn btn-danger btn-xs my-xs-btn" type="button" >' +
+            cell6.innerHTML = '<a href="managestudent.php?deleteStudent=' + student_id + '"><button class="btn btn-danger btn-xs my-xs-btn" type="button" >' +
                 '<span class="glyphicon glyphicon-trash"></span>Delete</button></a>';
+            cell7.innerHTML = '<button class="btn btn-warning btn-xs my-xs-btn" type="button" onclick="activateEditField(' + tempPur['id'] + ')">Edit</button>';
 
 
+        }
+
+        function activateEditField(rowId) {
+            var table = document.getElementById(rowId);
+
+            if (!editClicked.includes(rowId)) {
+
+                editClicked.push(rowId);
+
+                for (var i = 0, cell; cell = table.cells[i]; i++) {
+                    if (i == 1 || i == 2 || i == 3 || i == 4) {
+                        cell.innerHTML = '<input type="text" value =' + cell.innerHTML + '></input>';
+                    }
+                }
+
+                var editButtonCell = table.cells[6];
+                editButtonCell.innerHTML = '<button class="btn btn-success btn-xs my-xs-btn" type="button" onclick="activateEditField(' + rowId + ')">Save</button>';
+            } else {
+
+
+                const index = editClicked.indexOf(rowId);
+                if (index > -1) {
+                    editClicked.splice(index, 1);
+                }
+
+                for (var i = 0, cell; cell = table.cells[i]; i++) {
+                    if (i == 1 || i == 2 || i == 3 || i == 4) {
+
+                        var tableInput = createElementFromHTML(cell.innerHTML);
+                        cell.innerHTML = tableInput.value;
+                    }
+                }
+
+                var editButtonCell = table.cells[6];
+                editButtonCell.innerHTML = '<button class="btn btn-warning btn-xs my-xs-btn" type="button" onclick="activateEditField(' + rowId + ')">Edit</button>';
+                //updateValue(table.cells[0].innerHTML, table.cells[1].innerHTML, table.cells[2].innerHTML, table.cells[3].innerHTML, table.cells[4].innerHTML);
+
+            }
+
+        }
+
+        function createElementFromHTML(htmlString) {
+            var div = document.createElement('div');
+            div.innerHTML = htmlString.trim();
+
+            // Change this to div.childNodes to support multiple top-level nodes
+            return div.firstChild;
+        }
+
+        function updateValue(id, fname, lname, email, credit) {
+            console.log(id + fname + lname + email + credit);
+
+            var http = new XMLHttpRequest();
+            var url = 'updatestudent.php';
+            var params = 'id='+id+'&fname='+fname+'&lname='+lname+'&email='+email+'&credit='+credit;
+
+            http.open('POST', url, true);
+
+            //Send the proper header information along with the request
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            http.onreadystatechange = function() { //Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+                    alert(http.responseText);
+                    
+                }
+            }
+            http.send(params);
+        }
+
+        function noSubmit(){
+            return true;
         }
     </script>
 </body>
