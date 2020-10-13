@@ -169,7 +169,7 @@ function get_student()
 
                 for (var i = 0, cell; cell = table.cells[i]; i++) {
                     if (i == 1 || i == 2 || i == 3 || i == 4) {
-                        cell.innerHTML = '<input type="text" value =' + cell.innerHTML + '></input>';
+                        cell.innerHTML = '<input id="row_'+i+'" type="text" value =' + cell.innerHTML + '></input>';
                     }
                 }
 
@@ -186,14 +186,17 @@ function get_student()
                 for (var i = 0, cell; cell = table.cells[i]; i++) {
                     if (i == 1 || i == 2 || i == 3 || i == 4) {
 
+                        var cellValue = document.getElementById('row_'+i).value;
+                        
+
                         var tableInput = createElementFromHTML(cell.innerHTML);
-                        cell.innerHTML = tableInput.value;
+                        cell.innerHTML = cellValue;
                     }
                 }
 
                 var editButtonCell = table.cells[6];
                 editButtonCell.innerHTML = '<button class="btn btn-warning btn-xs my-xs-btn" type="button" onclick="activateEditField(' + rowId + ')">Edit</button>';
-                //updateValue(table.cells[0].innerHTML, table.cells[1].innerHTML, table.cells[2].innerHTML, table.cells[3].innerHTML, table.cells[4].innerHTML);
+                updateValue(table.cells[0].innerHTML, table.cells[1].innerHTML, table.cells[2].innerHTML, table.cells[3].innerHTML, table.cells[4].innerHTML);
 
             }
 
@@ -221,7 +224,7 @@ function get_student()
 
             http.onreadystatechange = function() { //Call a function when the state changes.
                 if (http.readyState == 4 && http.status == 200) {
-                    alert(http.responseText);
+                    //alert(http.responseText);
                     
                 }
             }
