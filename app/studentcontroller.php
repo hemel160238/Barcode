@@ -168,7 +168,7 @@ if (isset($_POST["getStudent"])) {
                         cell3.innerHTML = obj['name'];
                         cell4.innerHTML = obj['qty'];
 
-                        calcPrice.innerHTML = "Hello";
+                        calcPrice.innerHTML = "-";
                         //cell5.innerHTML = '<input id="productIn" type="number" value="1" min="0" name="productId" placeholder="Qty">   <button type="button" onclick="removeItem(id)">Remove Item</button>'
                         cell5.innerHTML = '<input id="productNumber" class="form-control" type="number" value="1" min="0" name="productId" placeholder="Qty" style="width: auto;">'
                         cell6.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeItem(this)">Remove Item</button>'

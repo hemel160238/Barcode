@@ -82,7 +82,7 @@ if ($_SESSION) {
     </div>
 
     <div>
-        <form id="studentForm" action="./nothing.php" method="POST">
+        <form id="studentForm" action="./studentcontroller.php" method="POST">
             <fieldset disabled style="display: flex;justify-content: space-around;">
                 <div class="form-group">
                     <label for="disabledTextInput">Id</label>
@@ -107,7 +107,7 @@ if ($_SESSION) {
     </div>
 
     <div style="display: none;">
-        <form action="./nothing.php" id="hiddenForm" method="POST">
+        <form action="./studentcontroller.php" id="hiddenForm" method="POST">
             <input type="text" id="hdisabledTextInputId" class="form-control" placeholder="ID" name="id">
             <input type="text" id="hdisabledTextInputName" class="form-control" placeholder="Name" name="name">
             <input type="text" id="hdisabledTextInputEmail" class="form-control" placeholder="Email" name="email">
