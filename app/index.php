@@ -1,3 +1,21 @@
+<?php 
+session_start();
+
+if ($_SESSION) {
+    if ($_SESSION['role'] == "admin") {
+      header("Location: allpurchase.php");
+    } 
+    elseif($_SESSION['role'] == "admin") {
+      header("Location: studentallpurchase.php");
+    }
+    // else{
+    //   header("Location: index.php");
+    // }
+} 
+else {
+  
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

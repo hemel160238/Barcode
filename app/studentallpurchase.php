@@ -7,11 +7,11 @@ if ($_SESSION) {
     if ($_SESSION['role'] == "student") {
         $studentid = $_SESSION['id'];
     } else {
-        header("Location: login.html");
+        header("Location: index.php");
     }
 } else {
     echo "Session Is not there";
-    header("Location: login.html");
+    header("Location: index.php");
 }
 
 

@@ -6,11 +6,11 @@ if ($_SESSION) {
     if ($_SESSION['role'] == "admin") {
         
     } else {
-        header("Location: login.html");
+        header("Location: index.php");
     }
 } else {
     echo "Session Is not there";
-    header("Location: login.html");
+    header("Location: index.php");
 }
 
 if (isset($_POST["getStudent"])) {
