@@ -111,6 +111,10 @@ function get_purchase_from_db($query_string)
                 <li class="nav-item">
                     <a class="nav-link" href="addstudent.php">Add Student</a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="additem.php">Add Item</a>
+                </li>
 
             </ul>
         </div>

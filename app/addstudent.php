@@ -84,10 +84,17 @@ function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
                     <a class="nav-link" href="managestudent.php">Manage Student</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="manageitem.php">Manage Item</a>
+                </li>
+
                 <li class="nav-item active">
                     <a class="nav-link" href="addstudent.php">Add Student</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="additem.php">Add Item</a>
+                </li>
             </ul>
         </div>
     </nav>

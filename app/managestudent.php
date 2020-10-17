@@ -93,6 +93,10 @@ function get_student()
                     <a class="nav-link" href="addstudent.php">Add Student</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="additem.php">Add Item</a>
+                </li>
+
             </ul>
         </div>
     </nav>

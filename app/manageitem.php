@@ -93,6 +93,10 @@ function get_item()
                     <a class="nav-link" href="addstudent.php">Add Student</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="additem.php">Add Item</a>
+                </li>
+
             </ul>
         </div>
     </nav>
@@ -108,7 +112,7 @@ function get_item()
         </form>
 
         <div id="buttonDiv">
-            <a href="addstudent.php">
+            <a href="additem.php">
                 <button type="submit" class="btn btn-primary">Add Item</button>
             </a>
         </div>

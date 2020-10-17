@@ -82,8 +82,16 @@ function insertItem($id, $price, $name, $qty)
                     <a class="nav-link" href="managestudent.php">Manage Student</a>
                 </li>
 
-                <li class="nav-item active">
+                <li class="nav-item">
+                    <a class="nav-link" href="manageitem.php">Manage Item</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="addstudent.php">Add Student</a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="additem.php">Add Item</a>
                 </li>
 
             </ul>
@@ -107,11 +115,6 @@ function insertItem($id, $price, $name, $qty)
         }
     
     ?>
-
-        <!-- <div class="alert alert-success" id="success_div" style="visibility: hidden;">
-            <strong>Success!</strong> Indicates a successful or positive action.
-        </div> -->
-
 
         <h1>Add Item</h1>
 
@@ -148,39 +151,6 @@ function insertItem($id, $price, $name, $qty)
     </div>
     <script>
 
-
-        // function addStudent() {
-
-        //     var id = document.getElementById('idInput').value;
-        //     var price = document.getElementById('priceInput').value;
-        //     var name = document.getElementById('nameInput').value;
-        //     var qty = document.getElementById('qtyInput').value;
-        //     var action = "add";
-        //     //alert(id + first_name + last_name + email + password);
-
-
-        //     var http = new XMLHttpRequest();
-        //     var url = 'addoreditstudent.php';
-        //     var params = 'id=' + id + "&first_name=" + first_name + "&last_name=" + last_name + "$email=" + email + "&password=" + password + "&action=" + action;
-        //     http.open('POST', url, true);
-
-        //     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-        //     http.onreadystatechange = function() { //Call a function when the state changes.
-        //         if (http.readyState == 4 && http.status == 200) {
-
-        //             var response = http.responseText;
-        //             //var obj = JSON.parse(response)[0];
-        //             console.log(response);
-
-        //             console.log(response);
-
-
-        //         }
-
-        //     }
-        //     http.send(params);
-        // }
     </script>
 </body>
 

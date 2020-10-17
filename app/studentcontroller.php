@@ -38,7 +38,38 @@ if (isset($_POST["getStudent"])) {
 
 
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" href="allpurchase.php">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="student.php">Make Purchase</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="managestudent.php">Manage Student</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="manageitem.php">Manage Item</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="addstudent.php">Add Student</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="additem.php">Add Item</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
     <div>
         <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
             <label class="logoutLblPos">
