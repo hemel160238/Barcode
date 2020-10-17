@@ -109,7 +109,8 @@ if (isset($_POST["getStudent"])) {
         <button type="button" id="calcPrice" onclick="calcPrice()" class="btn btn-success">Calculate Price</button>
         <button type="button" id="makePurchase" onclick="makePurchase()" class="btn btn-success">Confirm Purchase</button>
 
-        <p id="totalPrice">0</p>
+        <p id="totalPrice" style="visibility: hidden;">0</p>
+        <!-- <p id="totalPrice" >0</p> -->
     </div>
 
     <div>
@@ -119,8 +120,8 @@ if (isset($_POST["getStudent"])) {
                     <th scope="col">Id</th>
                     <th scope="col">Unit Price</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Qty2</th>
+                    <th scope="col">Stock QTY</th>
+                    <th scope="col">Purchase QTY</th>
                     <th scope="col">Total Price</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -273,7 +274,10 @@ if (isset($_POST["getStudent"])) {
             document.getElementById("totalPrice").innerHTML = grandTotal;
 
             if (creditAvaiable < grandTotal) {
+
                 document.getElementById("disabledTextInputCredit").style.border = "3px solid red";
+                document.getElementById("totalPrice").innerHTML = "0";
+                return;
             } else {
                 document.getElementById("disabledTextInputCredit").style.border = "";
             }
@@ -285,7 +289,7 @@ if (isset($_POST["getStudent"])) {
             var grandTotal =parseFloat(document.getElementById("totalPrice").innerHTML);
 
             if(grandTotal <= 0){
-                alert("Calculate First");
+                alert("Calculate First and Check Quantity");
                 return;
             }
         
