@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SESSION) {
-    if ($_SESSION['role'] == "admin") {
+    if ($_SESSION['role'] == "admin" or $_SESSION['role'] == "student") {
         
     } else {
         header("Location: index.php");
@@ -31,6 +31,8 @@ function get_purchase_details($purchaseId)
 {
 
     $query_string = "SELECT unit_purchase.id, unit_purchase.date, all_purchase.item_id, all_purchase.qty, product.name, product.price, student.id, student.first_name, student.last_name, student.email, student.credit FROM unit_purchase, all_purchase, product, student WHERE unit_purchase.id = all_purchase.purchase_id AND all_purchase.item_id = product.id AND unit_purchase.student = student.id AND unit_purchase.id = $purchaseId";
+
+    //echo $query_string;
     $con = config::connect();
     $query = $con->prepare($query_string);
 
@@ -59,6 +61,7 @@ function get_purchase_details($purchaseId)
 </head>
 
 <body>
+    
     <h1>Report for Purchase #<?php echo($purchaseId); ?></h1>
 
     <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">

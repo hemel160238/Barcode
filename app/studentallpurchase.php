@@ -99,14 +99,14 @@ function get_purchase_from_db($query_string)
         </label>
     </form>
 
-    <div style="margin-bottom: 10px;">
+    <!-- <div style="margin-bottom: 10px;">
         <a href="student.php">
             <button type="submit" class="btn btn-primary">Make New Purchase</button>
         </a>
         <a href="managestudent.php">
             <button type="submit" class="btn btn-primary">Students Manager</button>
         </a>
-    </div>
+    </div> -->
 
     <div>
         <form action="?" method="GET" class="form-inline">
