@@ -59,6 +59,11 @@ function make_array($insertId, $product){
     $productArray = json_decode($product);
     //echo sizeof($productArray);
 
+    if(!reduce_item($product)){
+        //echo "Unsuccessful";
+        return false;
+    }
+
     $base_string = "INSERT INTO `all_purchase`(`purchase_id`, `item_id`, `qty`) VALUES ";
     $query_array = array();
     foreach($productArray as $product){
@@ -93,5 +98,35 @@ function reduce_credit($studentId, $cost){
     $update_query->execute();
 
     return $update_query;
+}
+
+function reduce_item($product){
+
+    //echo "Here";
+    $productArray = json_decode($product);
+    $query_array = array();
+
+    try{
+        $con = config::connect();
+        // set the PDO error mode to exception
+        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        foreach($productArray as $product){
+            $get_qty_string = "SELECT `qty` FROM `product` WHERE product.id = ".(string)$product->id;
+            //echo "-".$product->qty."-";
+            $get_query = $con->prepare($get_qty_string);
+            $get_query->execute();
+            $current_qty = (int)$get_query->fetchAll(PDO::FETCH_ASSOC)[0]['qty'];
+
+            $update_qty_string = "UPDATE `product` SET `qty` = '".(int)($current_qty - (int)$product->qty)."' WHERE `product`.`id` = '".$product->id."';";
+            $update_query = $con->prepare($update_qty_string);
+            $update_query->execute();
+        }
+    }
+    catch (PDOException $e) {
+        //echo "Something Wrong";
+        return false;
+    }
+
+    return true;
 }
 ?>

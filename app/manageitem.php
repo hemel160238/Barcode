@@ -13,26 +13,26 @@ if ($_SESSION) {
 
 include_once("config.php");
 
-$deleteStudent = NULL;
+$deleteItem = NULL;
 
-if (isset($_GET['deleteStudent'])) {
-    $deleteStudent = $_GET['deleteStudent'];
+if (isset($_GET['deleteItem'])) {
+    $deleteItem = $_GET['deleteItem'];
 
-    del_student($deleteStudent);
+    del_item($deleteItem);
 }
 
 
-$get_purchase = get_student();
+$get_item = get_item();
 
-$result_purchase = $get_purchase->fetchAll();
-$json_string = json_encode($result_purchase);
+$result_item = $get_item->fetchAll();
+$json_string = json_encode($result_item);
 
 //echo $json_string;
 //SELECT * FROM `product` WHERE id = 1010 
-function del_student($deleteStudent)
+function del_item($deleteItem)
 {
     $con = config::connect();
-    $query_string = "DELETE FROM student WHERE student.id = " . $deleteStudent;
+    $query_string = "DELETE FROM product WHERE product.id = " . $deleteItem;
     $query = $con->prepare($query_string);
 
     $query->execute();
@@ -41,10 +41,10 @@ function del_student($deleteStudent)
 }
 
 
-function get_student()
+function get_item()
 {
     $con = config::connect();
-    $query_string = "SELECT * FROM `student`";
+    $query_string = "SELECT * FROM `product`";
     $query = $con->prepare($query_string);
 
     $query->execute();
@@ -57,7 +57,7 @@ function get_student()
 <html lang="en">
 
 <head>
-    <title>Add Student</title>
+    <title>Add Item</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -68,7 +68,7 @@ function get_student()
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
         <a class="navbar-brand" href="allpurchase.php">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -81,11 +81,11 @@ function get_student()
                     <a class="nav-link" href="student.php">Make Purchase</a>
                 </li>
 
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="managestudent.php">Manage Student</a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="manageitem.php">Manage Item</a>
                 </li>
 
@@ -98,7 +98,7 @@ function get_student()
     </nav>
     <div id="rootDiv">
 
-        <h1>Add Student</h1>
+        <h1>Add Item</h1>
 
         <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
             <label class="logoutLblPos">
@@ -109,7 +109,7 @@ function get_student()
 
         <div id="buttonDiv">
             <a href="addstudent.php">
-                <button type="submit" class="btn btn-primary">Add Student</button>
+                <button type="submit" class="btn btn-primary">Add Item</button>
             </a>
         </div>
 
@@ -117,11 +117,10 @@ function get_student()
             <table id="myTable" class="table table-hover table-dark">
                 <thead>
                     <tr>
-                        <th scope="col">Student Id</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Credit</th>
+                        <th scope="col">Item Id</th>
+                        <th scope="col">Item Price</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Qty</th>
                     </tr>
                 </thead>
 
@@ -147,19 +146,20 @@ function get_student()
 
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
-            var cell7 = row.insertCell(6);
+            //var cell7 = row.insertCell(6);
 
-            var student_id = tempPur['id'];
+            var item_id = tempPur['id'];
 
             cell1.innerHTML = tempPur['id'];
-            cell2.innerHTML = tempPur['first_name'];
-            cell3.innerHTML = tempPur['last_name'];
-            cell4.innerHTML = tempPur['email'];
-            cell5.innerHTML = tempPur['credit'];
+            cell2.innerHTML = tempPur['price'];
+            cell3.innerHTML = tempPur['name'];
+            cell4.innerHTML = tempPur['qty'];
 
-            cell6.innerHTML = '<a href="managestudent.php?deleteStudent=' + student_id + '"><button class="btn btn-danger btn-xs my-xs-btn" type="button" >' +
+            //cell5.innerHTML = tempPur['credit'];
+
+            cell5.innerHTML = '<a href="managestudent.php?deleteItem=' + item_id + '"><button class="btn btn-danger btn-xs my-xs-btn" type="button" >' +
                 '<span class="glyphicon glyphicon-trash"></span>Delete</button></a>';
-            cell7.innerHTML = '<button class="btn btn-warning btn-xs my-xs-btn" type="button" onclick="activateEditField(' + tempPur['id'] + ')">Edit</button>';
+            cell6.innerHTML = '<button class="btn btn-warning btn-xs my-xs-btn" type="button" onclick="activateEditField(' + tempPur['id'] + ')">Edit</button>';
 
 
         }
@@ -172,12 +172,12 @@ function get_student()
                 editClicked.push(rowId);
 
                 for (var i = 0, cell; cell = table.cells[i]; i++) {
-                    if (i == 1 || i == 2 || i == 3 || i == 4) {
+                    if (i == 1 || i == 2 || i == 3) {
                         cell.innerHTML = '<input id="row_' + i + '" type="text" value =' + cell.innerHTML + '></input>';
                     }
                 }
 
-                var editButtonCell = table.cells[6];
+                var editButtonCell = table.cells[5];
                 editButtonCell.innerHTML = '<button class="btn btn-success btn-xs my-xs-btn" type="button" onclick="activateEditField(' + rowId + ')">Save</button>';
             } else {
 
@@ -188,7 +188,7 @@ function get_student()
                 }
 
                 for (var i = 0, cell; cell = table.cells[i]; i++) {
-                    if (i == 1 || i == 2 || i == 3 || i == 4) {
+                    if (i == 1 || i == 2 || i == 3) {
 
                         var cellValue = document.getElementById('row_' + i).value;
 
@@ -198,9 +198,9 @@ function get_student()
                     }
                 }
 
-                var editButtonCell = table.cells[6];
+                var editButtonCell = table.cells[5];
                 editButtonCell.innerHTML = '<button class="btn btn-warning btn-xs my-xs-btn" type="button" onclick="activateEditField(' + rowId + ')">Edit</button>';
-                updateValue(table.cells[0].innerHTML, table.cells[1].innerHTML, table.cells[2].innerHTML, table.cells[3].innerHTML, table.cells[4].innerHTML);
+                updateValue(table.cells[0].innerHTML, table.cells[1].innerHTML, table.cells[2].innerHTML, table.cells[3].innerHTML);
 
             }
 
@@ -214,12 +214,12 @@ function get_student()
             return div.firstChild;
         }
 
-        function updateValue(id, fname, lname, email, credit) {
-            console.log(id + fname + lname + email + credit);
+        function updateValue(id, price, name, qty) {
+            console.log(id + price + name + qty);
 
             var http = new XMLHttpRequest();
-            var url = 'updatestudent.php';
-            var params = 'id=' + id + '&fname=' + fname + '&lname=' + lname + '&email=' + email + '&credit=' + credit;
+            var url = 'updateitem.php';
+            var params = 'id=' + id + '&price=' + price + '&name=' + name + '&qty=' + qty;
 
             http.open('POST', url, true);
 

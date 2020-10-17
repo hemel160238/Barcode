@@ -193,6 +193,22 @@ if (isset($_POST["getStudent"])) {
             var mytable = document.getElementById("myTable");
 
             var grandTotal = 0;
+
+            for (var i = 1, row; row = mytable.rows[i]; i++) {
+                
+                var stockQTY = parseFloat(row.cells[3].innerHTML);
+                var purchaseQTYcell = document.getElementById(row['id'])["childNodes"][4]["childNodes"][0];
+                var purchaseQTY = parseFloat(document.getElementById(row['id'])["childNodes"][4]["childNodes"][0].value);
+                
+                if(stockQTY < purchaseQTY){
+                    console.log(purchaseQTYcell);
+                    alert("Please check stock Quantity and Try Again");
+                    document.getElementById("totalPrice").innerHTML = 0;
+                    return;
+                }
+
+            }
+
             for (var i = 1, row; row = mytable.rows[i]; i++) {
                 //iterate through rows
                 //rows would be accessed using the "row" variable assigned in the for loop
@@ -235,7 +251,13 @@ if (isset($_POST["getStudent"])) {
 
         function makePurchase() {
 
+            var grandTotal =parseFloat(document.getElementById("totalPrice").innerHTML);
 
+            if(grandTotal <= 0){
+                alert("Calculate First");
+                return;
+            }
+        
             var mytable = document.getElementById("myTable");
 
             var keys = ['id', 'qty']

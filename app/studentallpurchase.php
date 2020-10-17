@@ -1,8 +1,11 @@
 <?php
 session_start();
 
+
+$studentid = NULL;
 if ($_SESSION) {
-    if ($_SESSION['role'] == "admin") {
+    if ($_SESSION['role'] == "student") {
+        $studentid = $_SESSION['id'];
     } else {
         header("Location: login.html");
     }
@@ -14,13 +17,13 @@ if ($_SESSION) {
 
 include_once("config.php");
 
-$studentid = NULL;
+
 $start_date = NULL;
 $end_date = NULL;
 
-if (isset($_GET['id'])) {
-    $studentid = $_GET['id'];
-}
+// if (isset($_GET['id'])) {
+//     $studentid = $_GET['id'];
+// }
 
 if (isset($_GET['startdate'])) {
     $start_date = $_GET['startdate'];
@@ -87,34 +90,6 @@ function get_purchase_from_db($query_string)
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
-        <a class="navbar-brand" href="allpurchase.php">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="student.php">Make Purchase</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="managestudent.php">Manage Student</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="manageitem.php">Manage Item</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="addstudent.php">Add Student</a>
-                </li>
-
-            </ul>
-        </div>
-    </nav>
     <h1>All Purchases</h1>
 
     <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
@@ -135,7 +110,7 @@ function get_purchase_from_db($query_string)
 
     <div>
         <form action="?" method="GET" class="form-inline">
-            <div class="form-group mx-sm-3 mb-2">
+            <div class="form-group mx-sm-3 mb-2" style="display: none;">
                 <label for="inputPassword2" class="sr-only">Student Id</label>
                 <input type="text" class="form-control" id="inputPassword2" placeholder="Id" name="id">
             </div>

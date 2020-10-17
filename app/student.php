@@ -44,12 +44,16 @@ if ($_SESSION) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="student.php">Make Purchase<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="student.php">Make Purchase</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="managestudent.php">Manage Student</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="manageitem.php">Manage Item</a>
                 </li>
 
                 <li class="nav-item">

@@ -41,6 +41,7 @@ if(isset($_POST['login']))
 
         if($role == "student"){
             $_SESSION['credit'] = $user_info['credit'];
+            header("Location: studentallpurchase.php");
         }
 
         if ($role == "admin"){
@@ -48,6 +49,9 @@ if(isset($_POST['login']))
         }
 
         var_dump($_SESSION);
+    }
+    else {
+        echo "Login Failed";
     }
 
 }

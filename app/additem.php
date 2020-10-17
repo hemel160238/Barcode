@@ -17,13 +17,11 @@ $update_success = "unset";
 
 if (isset($_POST['submit-btn'])) {
     $id = $_POST['id'];
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $credit = $_POST['credit'];
+    $price = $_POST['price'];
+    $name = $_POST['name'];
+    $qty = $_POST['qty'];
 
-    $insert_result = insertStudent($id, $first_name, $last_name, $email, $password, $credit);
+    $insert_result = insertItem($id, $price, $name, $qty);
 
     if ($insert_result) {
         $insert_success = "true";
@@ -35,13 +33,13 @@ if (isset($_POST['submit-btn'])) {
 }
 
 
-function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
+function insertItem($id, $price, $name, $qty)
 {
 
     try {
         $con = config::connect();
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $query_string = "INSERT INTO `student` (`id`, `first_name`, `last_name`, `email`, `password`, `credit`) VALUES ('$id', '$first_name', '$last_name', '$email', '$password', '$credit')";
+        $query_string = "INSERT INTO `product` (`id`, `price`, `name`, `qty`) VALUES ('$id', '$price', '$name', '$qty')";
         $query = $con->exec($query_string);
 
         return true;
@@ -63,7 +61,7 @@ function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
-    <title>Add Student</title>
+    <title>Add Item</title>
 </head>
 
 <body>
@@ -99,7 +97,7 @@ function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
         if($insert_success == "true"){
 
             echo '<div class="alert alert-success" id="success_div">';
-            echo '<strong>Operation Successful!</strong> Student Inserted Successfully' ;
+            echo '<strong>Operation Successful!</strong> Item Inserted Successfully' ;
             echo '</div>';
         }
         elseif ($insert_success == "false"){
@@ -115,7 +113,7 @@ function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
         </div> -->
 
 
-        <h1>Add Students</h1>
+        <h1>Add Item</h1>
 
         <form align="right" name="form1" method="post" action="logout.php" style="position: fixed;right: 10px;top: 5px;">
             <label class="logoutLblPos">
@@ -131,25 +129,18 @@ function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
                     <input type="text" class="form-control" id="idInput" aria-describedby="emailHelp" placeholder="Enter ID" name="id">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">First Name</label>
-                    <input type="text" class="form-control" id="fnameInput" aria-describedby="emailHelp" placeholder="First Name" name="first_name">
+                    <label for="exampleInputEmail1">Price</label>
+                    <input type="text" class="form-control" id="priceInput" aria-describedby="emailHelp" placeholder="Unit Price" name="price">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Last Name</label>
-                    <input type="text" class="form-control" id="lnameInput" aria-describedby="emailHelp" placeholder="Last Name" name="last_name">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Item Name" name="name">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+                    <label for="exampleInputEmail1">Qty</label>
+                    <input type="text" class="form-control" id="qtyInput" aria-describedby="emailHelp" placeholder="Quantity" name="qty">
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="text" class="form-control" id="passInput" placeholder="Password" name="password">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Credit</label>
-                    <input type="text" class="form-control" id="creditInput" placeholder="Credit" name="credit">
-                </div>
+    
                 <input type="submit" class="btn btn-primary" name="submit-btn">
             </form>
         </div>
@@ -158,39 +149,38 @@ function insertStudent($id, $first_name, $last_name, $email, $password, $credit)
     <script>
 
 
-        function addStudent() {
+        // function addStudent() {
 
-            var id = document.getElementById('idInput').value;
-            var first_name = document.getElementById('fnameInput').value;
-            var last_name = document.getElementById('lnameInput').value;
-            var email = document.getElementById('emailInput').value;
-            var password = document.getElementById('passInput').value;
-            var action = "add";
-            alert(id + first_name + last_name + email + password);
-
-
-            var http = new XMLHttpRequest();
-            var url = 'addoreditstudent.php';
-            var params = 'id=' + id + "&first_name=" + first_name + "&last_name=" + last_name + "$email=" + email + "&password=" + password + "&action=" + action;
-            http.open('POST', url, true);
-
-            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-            http.onreadystatechange = function() { //Call a function when the state changes.
-                if (http.readyState == 4 && http.status == 200) {
-
-                    var response = http.responseText;
-                    //var obj = JSON.parse(response)[0];
-                    console.log(response);
-
-                    console.log(response);
+        //     var id = document.getElementById('idInput').value;
+        //     var price = document.getElementById('priceInput').value;
+        //     var name = document.getElementById('nameInput').value;
+        //     var qty = document.getElementById('qtyInput').value;
+        //     var action = "add";
+        //     //alert(id + first_name + last_name + email + password);
 
 
-                }
+        //     var http = new XMLHttpRequest();
+        //     var url = 'addoreditstudent.php';
+        //     var params = 'id=' + id + "&first_name=" + first_name + "&last_name=" + last_name + "$email=" + email + "&password=" + password + "&action=" + action;
+        //     http.open('POST', url, true);
 
-            }
-            http.send(params);
-        }
+        //     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        //     http.onreadystatechange = function() { //Call a function when the state changes.
+        //         if (http.readyState == 4 && http.status == 200) {
+
+        //             var response = http.responseText;
+        //             //var obj = JSON.parse(response)[0];
+        //             console.log(response);
+
+        //             console.log(response);
+
+
+        //         }
+
+        //     }
+        //     http.send(params);
+        // }
     </script>
 </body>
 
